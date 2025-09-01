@@ -52,7 +52,7 @@ class ImovelAdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'referencia'   => 'required|unique:imoveis',
+            'referencia'   => 'nullable|string|max:100',
             'titulo'       => 'required',
             'tipo_negocio' => 'required|in:aluguel,venda',
             'tipo_imovel'  => 'required',
@@ -120,7 +120,7 @@ class ImovelAdminController extends Controller
         $imovel = Imovel::findOrFail($id);
 
         $request->validate([
-            'referencia'   => 'required|unique:imoveis,referencia,' . $id,
+            'referencia'   => 'nullable|string|max:100',
             'titulo'       => 'required',
             'tipo_negocio' => 'required|in:aluguel,venda',
             'tipo_imovel'  => 'required',
@@ -131,7 +131,6 @@ class ImovelAdminController extends Controller
             'imagens.*'    => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Garantir booleans vindos de checkbox (quando existirem)
         $data = $request->only([
             'referencia','titulo','descricao','tipo_negocio','tipo_imovel','valor',
             'valor_condominio','valor_iptu','endereco','numero','complemento',

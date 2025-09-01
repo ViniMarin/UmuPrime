@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('imoveis', function (Blueprint $table) {
             $table->id();
-            $table->string('referencia')->unique();
+            $table->string('referencia'); // removi o ->unique()
             $table->string('titulo');
             $table->text('descricao')->nullable();
             $table->enum('tipo_negocio', ['aluguel', 'venda']);

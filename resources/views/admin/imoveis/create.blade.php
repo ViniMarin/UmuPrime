@@ -30,7 +30,7 @@
 @endpush
 
 @section('content')
-<form action="{{ route('admin.imoveis.store') }}" method="POST" enctype="multipart/form-data">
+<form id="imovelForm" action="{{ route('admin.imoveis.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <!-- Informações principais -->
@@ -47,7 +47,14 @@
             </div>
             <div class="col-md-3">
                 <label class="form-label">Tipo de Imóvel</label>
-                <input type="text" name="tipo_imovel" class="form-control" value="{{ old('tipo_imovel') }}" required>
+                <select name="tipo_imovel" class="form-select" required>
+                    <option value="">Selecione...</option>
+                    <option value="apartamento" {{ old('tipo_imovel') == 'apartamento' ? 'selected' : '' }}>Apartamento</option>
+                    <option value="casa" {{ old('tipo_imovel') == 'casa' ? 'selected' : '' }}>Casa</option>
+                    <option value="terreno" {{ old('tipo_imovel') == 'terreno' ? 'selected' : '' }}>Terreno</option>
+                    <option value="sala_comercial" {{ old('tipo_imovel') == 'sala_comercial' ? 'selected' : '' }}>Sala Comercial</option>
+                    <option value="salao_comercial" {{ old('tipo_imovel') == 'salao_comercial' ? 'selected' : '' }}>Salão Comercial</option>
+                </select>
             </div>
             <div class="col-md-3">
                 <label class="form-label">Tipo de Negócio</label>
@@ -59,15 +66,23 @@
             </div>
             <div class="col-md-3">
                 <label class="form-label">Valor</label>
-                <input type="number" step="0.01" name="valor" class="form-control" value="{{ old('valor') }}" required>
+                <input type="text" name="valor" class="form-control money" value="{{ old('valor') }}" required>
             </div>
             <div class="col-md-3">
                 <label class="form-label">Valor Condomínio</label>
-                <input type="number" step="0.01" name="valor_condominio" class="form-control" value="{{ old('valor_condominio') }}">
+                <input type="text" name="valor_condominio" class="form-control money" value="{{ old('valor_condominio') }}">
             </div>
             <div class="col-md-3">
                 <label class="form-label">Valor IPTU</label>
-                <input type="number" step="0.01" name="valor_iptu" class="form-control" value="{{ old('valor_iptu') }}">
+                <input type="text" name="valor_iptu" class="form-control money" value="{{ old('valor_iptu') }}">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select" required>
+                    <option value="disponivel" {{ old('status') == 'disponivel' ? 'selected' : '' }}>Disponível</option>
+                    <option value="vendido" {{ old('status') == 'vendido' ? 'selected' : '' }}>Vendido</option>
+                    <option value="alugado" {{ old('status') == 'alugado' ? 'selected' : '' }}>Alugado</option>
+                </select>
             </div>
         </div>
     </div>
@@ -184,3 +199,28 @@
     </div>
 </form>
 @endsection
+
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
+<script>
+    $(function(){
+        // Aplica máscara
+        $('.money').maskMoney({
+            prefix: 'R$ ',
+            allowNegative: false,
+            thousands: '.',
+            decimal: ',',
+            affixesStay: true
+        });
+
+        // Converte antes de enviar
+        $('#imovelForm').on('submit', function() {
+            $('.money').each(function(){
+                let valor = $(this).maskMoney('unmasked')[0];
+                $(this).val(valor ? valor : '');
+            });
+        });
+    });
+</script>
+@endpush

@@ -26,6 +26,15 @@
         color: var(--secondary-color);
         font-weight: 600;
     }
+
+    .delete-image {
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+        padding: 0;
+        line-height: 20px;
+    }
 </style>
 @endpush
 
@@ -54,6 +63,8 @@
                     <option value="">Selecione...</option>
                     <option value="apartamento" {{ old('tipo_imovel', $imovel->tipo_imovel) == 'apartamento' ? 'selected' : '' }}>Apartamento</option>
                     <option value="casa" {{ old('tipo_imovel', $imovel->tipo_imovel) == 'casa' ? 'selected' : '' }}>Casa</option>
+                    <option value="sobrado" {{ old('tipo_imovel', $imovel->tipo_imovel) == 'sobrado' ? 'selected' : '' }}>Sobrado</option>
+                    <option value="chacara" {{ old('tipo_imovel', $imovel->tipo_imovel) == 'chacara' ? 'selected' : '' }}>Chácara</option>
                     <option value="terreno" {{ old('tipo_imovel', $imovel->tipo_imovel) == 'terreno' ? 'selected' : '' }}>Terreno</option>
                     <option value="sala_comercial" {{ old('tipo_imovel', $imovel->tipo_imovel) == 'sala_comercial' ? 'selected' : '' }}>Sala Comercial</option>
                     <option value="salao_comercial" {{ old('tipo_imovel', $imovel->tipo_imovel) == 'salao_comercial' ? 'selected' : '' }}>Salão Comercial</option>
@@ -191,6 +202,7 @@
             </div>
             <div class="col-md-2 d-flex align-items-center">
                 <div class="form-check mt-4">
+                    <input type="hidden" name="destaque" value="0">
                     <input class="form-check-input" type="checkbox" name="destaque" value="1"
                            {{ old('destaque', $imovel->destaque) ? 'checked' : '' }}>
                     <label class="form-check-label">Destaque</label>
@@ -212,8 +224,15 @@
         @if($imovel->imagens && $imovel->imagens->count())
             <div class="mt-3 d-flex flex-wrap gap-2">
                 @foreach($imovel->imagens as $img)
-                    <div>
+                    <div class="position-relative d-inline-block">
                         <img src="{{ asset('storage/' . $img->caminho_imagem) }}" alt="" width="120" class="rounded">
+
+                        <!-- Botão excluir -->
+                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 delete-image"
+                                data-id="{{ $img->id }}">X</button>
+
+                        <!-- Hidden que marca exclusão -->
+                        <input type="checkbox" name="delete_imagens[]" value="{{ $img->id }}" class="d-none delete-input">
                     </div>
                 @endforeach
             </div>
@@ -232,7 +251,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
 <script>
     $(function(){
-        // Aplica máscara
+        // Máscara dinheiro
         $('.money').maskMoney({
             prefix: 'R$ ',
             allowNegative: false,
@@ -241,12 +260,19 @@
             affixesStay: true
         });
 
-        // Converte antes de enviar
+        // Converte valores antes do submit
         $('#imovelForm').on('submit', function() {
             $('.money').each(function(){
                 let valor = $(this).maskMoney('unmasked')[0];
                 $(this).val(valor ? valor : '');
             });
+        });
+
+        // Botão excluir imagem
+        $(document).on('click', '.delete-image', function() {
+            let wrapper = $(this).closest('div');
+            wrapper.find('.delete-input').prop('checked', true); // marca p/ exclusão
+            wrapper.hide(); // esconde visualmente
         });
     });
 </script>

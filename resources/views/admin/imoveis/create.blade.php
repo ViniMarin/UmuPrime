@@ -51,6 +51,8 @@
                     <option value="">Selecione...</option>
                     <option value="apartamento" {{ old('tipo_imovel') == 'apartamento' ? 'selected' : '' }}>Apartamento</option>
                     <option value="casa" {{ old('tipo_imovel') == 'casa' ? 'selected' : '' }}>Casa</option>
+                    <option value="sobrado" {{ old('tipo_imovel') == 'sobrado' ? 'selected' : '' }}>Sobrado</option>
+                    <option value="chacara" {{ old('tipo_imovel') == 'chacara' ? 'selected' : '' }}>Chácara</option>
                     <option value="terreno" {{ old('tipo_imovel') == 'terreno' ? 'selected' : '' }}>Terreno</option>
                     <option value="sala_comercial" {{ old('tipo_imovel') == 'sala_comercial' ? 'selected' : '' }}>Sala Comercial</option>
                     <option value="salao_comercial" {{ old('tipo_imovel') == 'salao_comercial' ? 'selected' : '' }}>Salão Comercial</option>
@@ -174,6 +176,8 @@
             </div>
             <div class="col-md-2 d-flex align-items-center">
                 <div class="form-check mt-4">
+                    <!-- Hidden para enviar 0 caso não marcado -->
+                    <input type="hidden" name="destaque" value="0">
                     <input class="form-check-input" type="checkbox" name="destaque" value="1" {{ old('destaque') ? 'checked' : '' }}>
                     <label class="form-check-label">Destaque</label>
                 </div>

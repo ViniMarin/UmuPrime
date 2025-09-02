@@ -42,9 +42,20 @@ class ImovelController extends Controller
             $q->orderBy('ordem');
         }])->where('tipo_negocio', $tipo);
 
+        // Tipos de imóveis válidos
+        $tiposPermitidos = [
+            'apartamento',
+            'casa',
+            'terreno',
+            'sala_comercial',
+            'salao_comercial',
+            'chacara',
+            'sobrado'
+        ];
+
         // Aplicar filtros
-        if ($request->filled('tipo_imovel')) {
-            $query->where('tipo_imovel', 'like', '%' . $request->tipo_imovel . '%');
+        if ($request->filled('tipo_imovel') && in_array($request->tipo_imovel, $tiposPermitidos)) {
+            $query->where('tipo_imovel', $request->tipo_imovel);
         }
 
         if ($request->filled('valor_min')) {

@@ -32,9 +32,11 @@
                         <option value="">Selecione</option>
                         <option value="apartamento" {{ request('tipo_imovel') == 'apartamento' ? 'selected' : '' }}>Apartamento</option>
                         <option value="casa" {{ request('tipo_imovel') == 'casa' ? 'selected' : '' }}>Casa</option>
+                        <option value="sobrado" {{ request('tipo_imovel') == 'sobrado' ? 'selected' : '' }}>Sobrado</option>
+                        <option value="chacara" {{ request('tipo_imovel') == 'chacara' ? 'selected' : '' }}>Chácara</option>
                         <option value="terreno" {{ request('tipo_imovel') == 'terreno' ? 'selected' : '' }}>Terreno</option>
-                        <option value="comercial" {{ request('tipo_imovel') == 'salacomercial' ? 'selected' : '' }}>Sala Comercial</option>
-                         <option value="comercial" {{ request('tipo_imovel') == 'salaocomercial' ? 'selected' : '' }}>Salão Comercial</option>
+                        <option value="sala_comercial" {{ request('tipo_imovel') == 'sala_comercial' ? 'selected' : '' }}>Sala Comercial</option>
+                        <option value="salao_comercial" {{ request('tipo_imovel') == 'salao_comercial' ? 'selected' : '' }}>Salão Comercial</option>
                     </select>
                 </div>
                 <div class="col-md-2">
@@ -191,4 +193,3 @@
     </div>
 </section>
 @endsection
-

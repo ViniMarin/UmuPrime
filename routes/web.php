@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImovelController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ImovelAdminController;
+use App\Http\Controllers\Admin\SiteSettingsController; // << adicionado
 
 /*
 |--------------------------------------------------------------------------
@@ -34,16 +35,27 @@ Auth::routes(['register' => false]);
 */
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+
     Route::resource('imoveis', ImovelAdminController::class);
 
     // Excluir imagem de um imóvel
     Route::delete('imoveis/{imovel}/imagens/{imagem}', [ImovelAdminController::class, 'deleteImage'])
         ->name('imoveis.deleteImage');
+
+    // Configurações do site: Banner da Home
+    Route::get('/configuracoes/home',  [SiteSettingsController::class, 'edit'])->name('settings.home.edit');
+    Route::post('/configuracoes/home', [SiteSettingsController::class, 'update'])->name('settings.home.update');
 });
 
 /*
 |--------------------------------------------------------------------------
 | Pós-login padrão do Laravel
 |--------------------------------------------------------------------------
+|
+| Mantemos a rota /home apenas para compatibilidade com o scaffold de auth,
+| redirecionando para a home pública. Nome diferente para evitar conflito.
+|
 */
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', function () {
+    return redirect()->route('home');
+})->name('home.redirect');

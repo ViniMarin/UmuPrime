@@ -24,11 +24,7 @@
             --sidebar-width: 250px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -38,8 +34,7 @@
         /* Sidebar */
         .sidebar {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             height: 100vh;
             width: var(--sidebar-width);
             background: linear-gradient(135deg, var(--secondary-color), #333);
@@ -59,9 +54,7 @@
             filter: brightness(0) invert(1);
         }
 
-        .sidebar-menu {
-            padding: 20px 0;
-        }
+        .sidebar-menu { padding: 20px 0; }
 
         .sidebar-menu .nav-link {
             color: #ccc;
@@ -98,7 +91,7 @@
             padding: 15px 30px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
-            justify-content: between;
+            justify-content: space-between; /* corrigido */
             align-items: center;
         }
 
@@ -109,28 +102,8 @@
             font-weight: 600;
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--secondary-color);
-            font-weight: 600;
-        }
-
         /* Content Area */
-        .content-area {
-            padding: 30px;
-        }
+        .content-area { padding: 30px; }
 
         /* Cards */
         .stat-card {
@@ -141,35 +114,19 @@
             transition: transform 0.3s ease;
             border-left: 4px solid var(--primary-color);
         }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
+        .stat-card:hover { transform: translateY(-5px); }
         .stat-card .stat-icon {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             background: var(--primary-color);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             color: var(--secondary-color);
-            font-size: 24px;
-            margin-bottom: 15px;
+            font-size: 24px; margin-bottom: 15px;
         }
-
         .stat-card .stat-number {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 5px;
+            font-size: 32px; font-weight: 700; color: var(--text-dark); margin-bottom: 5px;
         }
-
-        .stat-card .stat-label {
-            color: var(--text-light);
-            font-size: 14px;
-        }
+        .stat-card .stat-label { color: var(--text-light); font-size: 14px; }
 
         /* Tables */
         .table-card {
@@ -178,7 +135,6 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-
         .table-card .card-header {
             background: var(--primary-color);
             color: var(--secondary-color);
@@ -186,11 +142,7 @@
             font-weight: 600;
             border: none;
         }
-
-        .table-responsive {
-            border-radius: 0 0 15px 15px;
-        }
-
+        .table-responsive { border-radius: 0 0 15px 15px; }
         .table th {
             background-color: #f8f9fa;
             border: none;
@@ -198,20 +150,9 @@
             color: var(--text-dark);
             padding: 15px;
         }
-
-        .table td {
-            border: none;
-            padding: 15px;
-            vertical-align: middle;
-        }
-
-        .table tbody tr {
-            border-bottom: 1px solid #eee;
-        }
-
-        .table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
+        .table td { border: none; padding: 15px; vertical-align: middle; }
+        .table tbody tr { border-bottom: 1px solid #eee; }
+        .table tbody tr:hover { background-color: #f8f9fa; }
 
         /* Buttons */
         .btn-primary {
@@ -222,22 +163,13 @@
             border-radius: 8px;
             padding: 10px 20px;
         }
-
         .btn-primary:hover {
             background-color: var(--accent-color);
             border-color: var(--accent-color);
             color: var(--secondary-color);
         }
-
-        .btn-outline-primary {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--primary-color);
-            color: var(--secondary-color);
-        }
+        .btn-outline-primary { border-color: var(--primary-color); color: var(--primary-color); }
+        .btn-outline-primary:hover { background-color: var(--primary-color); color: var(--secondary-color); }
 
         /* Forms */
         .form-control, .form-select {
@@ -246,48 +178,21 @@
             padding: 12px 15px;
             transition: border-color 0.3s ease;
         }
-
         .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
         }
 
         /* Alerts */
-        .alert {
-            border-radius: 10px;
-            border: none;
-            padding: 15px 20px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
+        .alert { border-radius: 10px; border: none; padding: 15px 20px; }
+        .alert-success { background-color: #d4edda; color: #155724; }
+        .alert-danger  { background-color: #f8d7da; color: #721c24; }
 
         /* Badges */
-        .badge {
-            font-size: 12px;
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
-
-        .badge.bg-success {
-            background-color: #28a745 !important;
-        }
-
-        .badge.bg-warning {
-            background-color: #ffc107 !important;
-            color: #000 !important;
-        }
-
-        .badge.bg-danger {
-            background-color: #dc3545 !important;
-        }
+        .badge { font-size: 12px; padding: 6px 12px; border-radius: 20px; }
+        .badge.bg-success { background-color: #28a745 !important; }
+        .badge.bg-warning { background-color: #ffc107 !important; color: #000 !important; }
+        .badge.bg-danger  { background-color: #dc3545 !important; }
 
         /* Image Preview */
         .image-preview {
@@ -299,21 +204,10 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .content-area {
-                padding: 20px 15px;
-            }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .content-area { padding: 20px 15px; }
         }
     </style>
     
@@ -324,7 +218,6 @@
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <img src="{{ asset('images/logo.png') }}" alt="UmuPrime">
-            <h5 class="mt-2">Painel Admin</h5>
         </div>
         
         <nav class="sidebar-menu">
@@ -341,6 +234,12 @@
             <a href="{{ route('admin.imoveis.create') }}" class="nav-link">
                 <i class="fas fa-plus"></i>
                 Novo Imóvel
+            </a>
+
+            <!-- NOVO: Banner da Home -->
+            <a href="{{ route('admin.settings.home.edit') }}" class="nav-link {{ request()->routeIs('admin.settings.home.*') ? 'active' : '' }}">
+                <i class="fas fa-image"></i>
+                Banner da Home
             </a>
             
             <hr class="my-3" style="border-color: #444;">
@@ -370,13 +269,7 @@
                 </button>
                 <h1>@yield('page-title', 'Dashboard')</h1>
             </div>
-            
-            <div class="user-info">
-                <span>{{ Auth::user()->name }}</span>
-                <div class="user-avatar">
-                    {{ substr(Auth::user()->name, 0, 1) }}
-                </div>
-            </div>
+            <div></div>
         </div>
 
         <!-- Content Area -->
@@ -434,4 +327,3 @@
     @stack('scripts')
 </body>
 </html>
-

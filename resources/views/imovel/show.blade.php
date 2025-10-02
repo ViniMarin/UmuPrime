@@ -3,29 +3,13 @@
 @section('title', $imovel->titulo . ' - UmuPrime Imóveis')
 
 @section('content')
-<!-- Property Header -->
-<section class="py-4 bg-light">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Início</a></li>
-                <li class="breadcrumb-item">
-                    <a href="{{ $imovel->tipo_negocio == 'aluguel' ? route('imoveis.aluguel') : route('imoveis.venda') }}">
-                        Imóveis para {{ ucfirst($imovel->tipo_negocio) }}
-                    </a>
-                </li>
-                <li class="breadcrumb-item active">{{ $imovel->referencia }}</li>
-            </ol>
-        </nav>
-    </div>
-</section>
 
 <!-- Property Details -->
 <section class="py-5">
     <div class="container">
         <div class="row">
-            <!-- Coluna esquerda (galeria + infos) -->
-            <div class="col-lg-8">
+            <!-- COLUNA ESQUERDA (galeria + detalhes) -->
+            <div class="col-lg-8 order-1 order-lg-1">
                 <div class="property-images mb-4">
                     @php $qtdImgs = $imovel->imagens->count(); @endphp
 
@@ -67,6 +51,98 @@
                         </div>
                     @endif
                 </div>
+
+                <!-- 🔽 CAIXA DE INFORMAÇÕES (MOBILE) — logo abaixo das imagens -->
+                <div class="d-block d-lg-none mb-4">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="price-section text-center mb-4">
+                                <div class="property-type badge bg-primary mb-2">
+                                    {{ ucfirst($imovel->tipo_negocio) }}
+                                </div>
+                                <h3 class="price fw-bold mb-0 property-price">
+                                    {{ $imovel->valor_formatado }}
+                                </h3>
+                                @if($imovel->tipo_negocio == 'aluguel')
+                                <small class="text-muted">/ mês</small>
+                                @endif
+                            </div>
+
+                            <div class="property-details mb-4">
+                                <h5 class="fw-bold mb-3">{{ $imovel->titulo }}</h5>
+                                <p class="text-muted mb-3">
+                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    {{ $imovel->endereco }}
+                                    @if($imovel->numero), {{ $imovel->numero }}@endif
+                                    <br>
+                                    {{ $imovel->bairro }} - {{ $imovel->cidade }}/{{ $imovel->estado }}
+                                </p>
+
+                                <div class="row text-center">
+                                    @if($imovel->quartos)
+                                    <div class="col-4">
+                                        <i class="fas fa-bed fa-2x mb-2" style="color: var(--primary-color);"></i>
+                                        <div class="fw-bold">{{ $imovel->quartos }}</div>
+                                        <small class="text-muted">Quartos</small>
+                                    </div>
+                                    @endif
+                                    @if($imovel->banheiros)
+                                    <div class="col-4">
+                                        <i class="fas fa-bath fa-2x mb-2" style="color: var(--primary-color);"></i>
+                                        <div class="fw-bold">{{ $imovel->banheiros }}</div>
+                                        <small class="text-muted">Banheiros</small>
+                                    </div>
+                                    @endif
+                                    @if($imovel->area_construida)
+                                    <div class="col-4">
+                                        <i class="fas fa-ruler-combined fa-2x mb-2" style="color: var(--primary-color);"></i>
+                                        <div class="fw-bold">{{ $imovel->area_construida }}</div>
+                                        <small class="text-muted">m²</small>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="additional-info mb-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong>Referência:</strong><br>
+                                        <span class="text-muted">{{ $imovel->referencia }}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <strong>Tipo:</strong><br>
+                                        <span class="text-muted">{{ ucfirst($imovel->tipo_imovel) }}</span>
+                                    </div>
+                                </div>
+                                @if($imovel->area_total)
+                                <div class="row mt-2">
+                                    <div class="col-6">
+                                        <strong>Área Total:</strong><br>
+                                        <span class="text-muted">{{ $imovel->area_total }}m²</span>
+                                    </div>
+                                    @if($imovel->vagas_garagem)
+                                    <div class="col-6">
+                                        <strong>Garagem:</strong><br>
+                                        <span class="text-muted">{{ $imovel->vagas_garagem }} vaga(s)</span>
+                                    </div>
+                                    @endif
+                                </div>
+                                @endif
+                            </div>
+
+                            <div class="contact-buttons">
+                                <a href="https://wa.me/5544997292225?text=Olá! Tenho interesse no imóvel {{ $imovel->referencia }} - {{ $imovel->titulo }}" 
+                                   class="btn btn-success w-100 mb-3" target="_blank">
+                                    <i class="fab fa-whatsapp"></i> Conversar no WhatsApp
+                                </a>
+                                <a href="{{ route('contato') }}" class="btn btn-primary w-100">
+                                    <i class="fas fa-envelope"></i> Enviar Mensagem
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 🔼 /MOBILE CARD -->
 
                 <!-- Descrição -->
                 <div class="card-custom mb-4">
@@ -148,111 +224,101 @@
                         <div id="map" style="width: 100%; height: 350px;" class="rounded shadow"></div>
                     @endif
                 </div>
-            </div>
+            </div><!-- /col-lg-8 -->
 
-            <!-- Coluna direita (SIDEBAR inline) -->
-            <div class="col-lg-4">
-                <div class="property-info-card">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <!-- Preço -->
-                            <div class="price-section text-center mb-4">
-                                <div class="property-type badge bg-primary mb-2">
-                                    {{ ucfirst($imovel->tipo_negocio) }}
+            <!-- COLUNA DIREITA (sidebar desktop) -->
+            <div class="col-lg-4 order-2 order-lg-2">
+                <div class="d-none d-lg-block">
+                    <div class="property-info-card">
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <div class="price-section text-center mb-4">
+                                    <div class="property-type badge bg-primary mb-2">
+                                        {{ ucfirst($imovel->tipo_negocio) }}
+                                    </div>
+                                    <h3 class="price fw-bold mb-0 property-price">
+                                        {{ $imovel->valor_formatado }}
+                                    </h3>
+                                    @if($imovel->tipo_negocio == 'aluguel')
+                                    <small class="text-muted">/ mês</small>
+                                    @endif
                                 </div>
-                                <h3 class="price fw-bold mb-0" style="color: var(--primary-color);">
-                                    {{ $imovel->valor_formatado }}
-                                </h3>
-                                @if($imovel->tipo_negocio == 'aluguel')
-                                <small class="text-muted">/ mês</small>
-                                @endif
-                            </div>
 
-                            <!-- Título/Endereço -->
-                            <div class="property-details mb-4">
-                                <h5 class="fw-bold mb-3">{{ $imovel->titulo }}</h5>
-                                <p class="text-muted mb-3">
-                                    <i class="fas fa-map-marker-alt me-2"></i>
-                                    {{ $imovel->endereco }}
-                                    @if($imovel->numero), {{ $imovel->numero }}@endif
-                                    <br>
-                                    {{ $imovel->bairro }} - {{ $imovel->cidade }}/{{ $imovel->estado }}
-                                </p>
+                                <div class="property-details mb-4">
+                                    <h5 class="fw-bold mb-3">{{ $imovel->titulo }}</h5>
+                                    <p class="text-muted mb-3">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        {{ $imovel->endereco }}
+                                        @if($imovel->numero), {{ $imovel->numero }}@endif
+                                        <br>
+                                        {{ $imovel->bairro }} - {{ $imovel->cidade }}/{{ $imovel->estado }}
+                                    </p>
 
-                                <div class="property-specs">
                                     <div class="row text-center">
                                         @if($imovel->quartos)
                                         <div class="col-4">
-                                            <div class="spec-item">
-                                                <i class="fas fa-bed fa-2x mb-2" style="color: var(--primary-color);"></i>
-                                                <div class="fw-bold">{{ $imovel->quartos }}</div>
-                                                <small class="text-muted">Quartos</small>
-                                            </div>
+                                            <i class="fas fa-bed fa-2x mb-2" style="color: var(--primary-color);"></i>
+                                            <div class="fw-bold">{{ $imovel->quartos }}</div>
+                                            <small class="text-muted">Quartos</small>
                                         </div>
                                         @endif
                                         @if($imovel->banheiros)
                                         <div class="col-4">
-                                            <div class="spec-item">
-                                                <i class="fas fa-bath fa-2x mb-2" style="color: var(--primary-color);"></i>
-                                                <div class="fw-bold">{{ $imovel->banheiros }}</div>
-                                                <small class="text-muted">Banheiros</small>
-                                            </div>
+                                            <i class="fas fa-bath fa-2x mb-2" style="color: var(--primary-color);"></i>
+                                            <div class="fw-bold">{{ $imovel->banheiros }}</div>
+                                            <small class="text-muted">Banheiros</small>
                                         </div>
                                         @endif
                                         @if($imovel->area_construida)
                                         <div class="col-4">
-                                            <div class="spec-item">
-                                                <i class="fas fa-ruler-combined fa-2x mb-2" style="color: var(--primary-color);"></i>
-                                                <div class="fw-bold">{{ $imovel->area_construida }}</div>
-                                                <small class="text-muted">m²</small>
-                                            </div>
+                                            <i class="fas fa-ruler-combined fa-2x mb-2" style="color: var(--primary-color);"></i>
+                                            <div class="fw-bold">{{ $imovel->area_construida }}</div>
+                                            <small class="text-muted">m²</small>
                                         </div>
                                         @endif
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Info extra -->
-                            <div class="additional-info mb-4">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <strong>Referência:</strong><br>
-                                        <span class="text-muted">{{ $imovel->referencia }}</span>
+                                <div class="additional-info mb-4">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <strong>Referência:</strong><br>
+                                            <span class="text-muted">{{ $imovel->referencia }}</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong>Tipo:</strong><br>
+                                            <span class="text-muted">{{ ucfirst($imovel->tipo_imovel) }}</span>
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-                                        <strong>Tipo:</strong><br>
-                                        <span class="text-muted">{{ ucfirst($imovel->tipo_imovel) }}</span>
-                                    </div>
-                                </div>
-                                @if($imovel->area_total)
-                                <div class="row mt-2">
-                                    <div class="col-6">
-                                        <strong>Área Total:</strong><br>
-                                        <span class="text-muted">{{ $imovel->area_total }}m²</span>
-                                    </div>
-                                    @if($imovel->vagas_garagem)
-                                    <div class="col-6">
-                                        <strong>Garagem:</strong><br>
-                                        <span class="text-muted">{{ $imovel->vagas_garagem }} vaga(s)</span>
+                                    @if($imovel->area_total)
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <strong>Área Total:</strong><br>
+                                            <span class="text-muted">{{ $imovel->area_total }}m²</span>
+                                        </div>
+                                        @if($imovel->vagas_garagem)
+                                        <div class="col-6">
+                                            <strong>Garagem:</strong><br>
+                                            <span class="text-muted">{{ $imovel->vagas_garagem }} vaga(s)</span>
+                                        </div>
+                                        @endif
                                     </div>
                                     @endif
                                 </div>
-                                @endif
-                            </div>
 
-                            <!-- Botões -->
-                            <div class="contact-buttons">
-                                <a href="https://wa.me/5544999999999?text=Olá! Tenho interesse no imóvel {{ $imovel->referencia }} - {{ $imovel->titulo }}" 
-                                   class="btn btn-success w-100 mb-3" target="_blank">
-                                    <i class="fab fa-whatsapp"></i> Conversar no WhatsApp
-                                </a>
-                                <a href="{{ route('contato') }}" class="btn btn-primary w-100">
-                                    <i class="fas fa-envelope"></i> Enviar Mensagem
-                                </a>
+                                <div class="contact-buttons">
+                                    <a href="https://wa.me/5544997292225?text=Olá! Tenho interesse no imóvel {{ $imovel->referencia }} - {{ $imovel->titulo }}" 
+                                       class="btn btn-success w-100 mb-3" target="_blank">
+                                        <i class="fab fa-whatsapp"></i> Conversar no WhatsApp
+                                    </a>
+                                    <a href="{{ route('contato') }}" class="btn btn-primary w-100">
+                                        <i class="fas fa-envelope"></i> Enviar Mensagem
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- /d-none d-lg-block -->
             </div><!-- /col-lg-4 -->
         </div>
     </div>
@@ -292,21 +358,38 @@
         inset: 0; background: rgba(0,0,0,0.92);
         text-align: center;
     }
-    .lightbox-content {
-        max-width: 92%; max-height: 84%; margin: auto; display: block;
-    }
-    .lightbox .close {
-        position: absolute; top: 18px; right: 28px; color: #fff;
-        font-size: 40px; font-weight: 700; cursor: pointer;
-    }
+    .lightbox-content { max-width: 92%; max-height: 84%; margin: auto; display: block; }
+    .lightbox .close { position: absolute; top: 18px; right: 28px; color: #fff; font-size: 40px; font-weight: 700; cursor: pointer; }
     .lightbox-prev, .lightbox-next {
         position: absolute; top: 50%; transform: translateY(-50%);
         background: rgba(255,255,255,0.2); color: #fff; border: none;
-        padding: 14px; cursor: pointer; font-size: 30px; border-radius: 50%;
-        line-height: 1;
+        padding: 14px; cursor: pointer; font-size: 30px; border-radius: 50%; line-height: 1;
     }
     .lightbox-prev { left: 30px; }
     .lightbox-next { right: 30px; }
+
+    /* ===== Ajustes visuais pedidos ===== */
+    /* Badge "Venda/Aluguel" no amarelo do tema */
+    .property-type.badge{
+        font-size: 1rem;
+        padding: 8px 16px;
+        font-weight: 700;
+        border-radius: 999px;
+        background-color: var(--primary-color) !important;   /* amarelo */
+        color: var(--secondary-color) !important;            /* preto */
+    }
+    /* Valor em preto e estável */
+    .property-price {
+        color: #000 !important;
+        font-size: 28px;
+        font-weight: 700;
+        display: block;
+        background: transparent !important;
+        position: static !important;
+        margin: 0 0 4px 0;
+        line-height: 1.2;
+    }
+    .price-section small { display: block; margin-top: 2px; }
 </style>
 @endpush
 
@@ -324,7 +407,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const lbPrev     = document.querySelector('.lightbox-prev');
     const lbNext     = document.querySelector('.lightbox-next');
 
-    // Array de imagens na ordem exata das miniaturas
     const images = (thumbs.length
         ? Array.from(thumbs).map(t => t.src)
         : (mainImg ? [mainImg.src] : [])
@@ -336,7 +418,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!images.length || !mainImg) return;
         mainImg.src = images[currentIndex];
         thumbs.forEach(t => t.classList.toggle('active-thumbnail', Number(t.dataset.index) === currentIndex));
-        // Se o lightbox estiver aberto, sincroniza
         if (lightbox.style.display === 'block') {
             lightboxImg.src = images[currentIndex];
         }
@@ -356,7 +437,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = '';
     }
 
-    // Clique nas miniaturas -> seleciona a imagem correta e abre em tela cheia
     thumbs.forEach(t => {
         t.addEventListener('click', () => {
             currentIndex = Number(t.dataset.index) || 0;
@@ -365,7 +445,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Navegação fora do lightbox (setas da galeria normal)
     if (prevBtn && nextBtn && images.length > 1) {
         prevBtn.addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + images.length) % images.length;
@@ -377,12 +456,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Clique na imagem principal abre o lightbox
     if (mainImg) {
         mainImg.addEventListener('click', openLightbox);
     }
 
-    // Controles do lightbox (setas SEMPRE visíveis)
     lbPrev.addEventListener('click', () => {
         currentIndex = (currentIndex - 1 + images.length) % images.length;
         render();
@@ -393,7 +470,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     closeBtn.addEventListener('click', closeLightbox);
 
-    // Teclado
     document.addEventListener('keydown', (e) => {
         if (lightbox.style.display === 'block') {
             if (e.key === 'Escape') closeLightbox();
@@ -405,7 +481,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Inicia com a primeira imagem
     render();
 });
 </script>
